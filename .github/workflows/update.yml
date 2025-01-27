@@ -22,11 +22,9 @@ jobs:
         echo "Size: $(du -sh ./dist)"
         echo "Amount: $(tree ./dist |wc -l)"
         
-    - name: Coscmd
+    - name: Deploy
       run: |
-        git clone https://github.com/tencentyun/coscmd.git /tmp/coscmd
-        cd /tmp/coscmd
-        python setup.py install
+        pip install https://github.com/tencentyun/coscmd/archive/refs/heads/master.zip
         echo "[common]" > ~/.cos.conf
         echo "secret_id = ${{ secrets.SECRET_ID }}" >> ~/.cos.conf
         echo "secret_key = ${{ secrets.SECRET_KEY }}" >> ~/.cos.conf
@@ -39,7 +37,4 @@ jobs:
         echo "schema = https" >> ~/.cos.conf
         echo "verify = md5" >> ~/.cos.conf
         echo "anonymous = False" >> ~/.cos.conf
-
-    - name: Deploy
-      run: |
         coscmd -b ${{ secrets.COS_BUCKET }}" -r ${{ secrets.COS_REGION }}" -rs .\\dist\\ /
