@@ -1,0 +1,21 @@
+name: Build And Deploy Dist
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  copy_repo:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+
+    - name: Copy
+      run: |
+        shopt -u dotglob
+        cp -r ./repo/* ./dist/
