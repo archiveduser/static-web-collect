@@ -1,0 +1,40 @@
+name: Update And Deploy Dist
+
+on:
+  push:
+  schedule:
+    - cron: '50 */2 * * *'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+
+    - name: Copy
+      run: |
+        shopt -u dotglob
+        cp -r ./repo/* ./dist/
+        echo "Size: $(du -sh ./dist)"
+        echo "Amount: $(tree ./dist |wc -l)"
+        
+    - name: Deploy
+      run: |
+        pip install -U coscmd
+        echo "[common]" > ~/.cos.conf
+        echo "secret_id = ${{ secrets.SECRET_ID }}" >> ~/.cos.conf
+        echo "secret_key = ${{ secrets.SECRET_KEY }}" >> ~/.cos.conf
+        echo "bucket = ${{ secrets.COS_BUCKET }}" >> ~/.cos.conf
+        echo "region = ${{ secrets.COS_REGION }}" >> ~/.cos.conf
+        echo "max_thread = 5" >> ~/.cos.conf
+        echo "part_size = 1" >> ~/.cos.conf
+        echo "retry = 5" >> ~/.cos.conf
+        echo "timeout = 60" >> ~/.cos.conf
+        echo "schema = https" >> ~/.cos.conf
+        echo "verify = md5" >> ~/.cos.conf
+        echo "anonymous = False" >> ~/.cos.conf
+        coscmd -b ${{ secrets.COS_BUCKET }}" -r ${{ secrets.COS_REGION }}" -rs .\\dist\\ /
