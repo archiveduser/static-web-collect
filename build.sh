@@ -7,7 +7,7 @@ rsync -a --include='tv/***' --include='e.xml' --exclude='*' ./repo/fanmingming-l
 
 # https://github.com/novnc/noVNC.git
 git clone https://github.com/novnc/noVNC.git ./repo/novnc --depth=1
-rsync -a --exclude='.*' --exclude='utils' --exclude='tests' --exclude='snap' ./repo/novnc/ ./dist/novnc/
+rsync -a --exclude='.*' --exclude='utils' --exclude='tests' --exclude='snap' --exclude='docs' ./repo/novnc/ ./dist/novnc/
 
 # stats
 echo "Size: $(du -sh ./dist)"
