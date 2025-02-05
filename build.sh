@@ -3,8 +3,7 @@ shopt -u dotglob
 
 # https://github.com/fanmingming/live.git
 git clone https://github.com/fanmingming/live.git ./repo/fanmingming-live --depth=1
-cp ./repo/fanmingming-live ./dist -r
-
+rsync -a --exclude='.*' ./repo/fanmingming-live ./dist
 
 # stats
 echo "Size: $(du -sh ./dist)"
