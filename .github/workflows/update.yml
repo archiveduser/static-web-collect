@@ -16,12 +16,14 @@ jobs:
         submodules: recursive
         fetch-depth: 1
 
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'
+        cache: 'npm' 
+
     - name: Copy
-      run: |
-        shopt -u dotglob
-        cp -r ./repo/* ./dist/
-        echo "Size: $(du -sh ./dist)"
-        echo "Amount: $(tree ./dist |wc -l)"
+      run: bash build.sh
         
     - name: Deploy
       run: |
