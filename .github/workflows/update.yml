@@ -34,4 +34,4 @@ jobs:
         echo "schema = https" >> ~/.cos.conf
         echo "verify = md5" >> ~/.cos.conf
         echo "anonymous = False" >> ~/.cos.conf
-        coscmd -b ${{ secrets.COS_BUCKET }} -r ${{ secrets.COS_REGION }} upload -rs ./dist/ / --ignore ".*"
+        coscmd -b ${{ secrets.COS_BUCKET }} -r ${{ secrets.COS_REGION }} upload -rs ./dist/ /
