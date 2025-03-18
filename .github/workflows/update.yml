@@ -35,3 +35,12 @@ jobs:
         echo "verify = md5" >> ~/.cos.conf
         echo "anonymous = False" >> ~/.cos.conf
         coscmd -b ${{ secrets.COS_BUCKET }} -r ${{ secrets.COS_REGION }} upload -rs ./dist/ /
+
+    - name: Record
+      run: |
+        echo "$(date -u +'%Y-%m-%d %H:%M:%S UTC')" > last_update
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git add last_update
+        git commit -m "update" || echo "No changes to commit"
+        git push
